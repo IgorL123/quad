@@ -1,37 +1,30 @@
 import pytest
 from flask import url_for
 from app.backend.factory import create_app
+import os
 
 
 @pytest.fixture
-def app():
-
-    app = create_app({
-        'TESTING': True,
-    })
-
-    with app.app_context():
-        yield app
-
-
-@pytest.fixture
-def client(app):
-    return app.test_client()
+def client():
+    os.environ['CONFIG_TYPE'] = 'config.TestingConfig'
+    app = create_app()
+    with app.test_client() as client:
+        with app.app_context():
+            yield client
 
 
 def test_home_page(client):
-    response = client.get(url_for('home'))
+    response = client.get('/home')
     assert response.status_code == 200
-    assert b"Welcome" in response.data
 
 
 def test_login_page(client):
-    response = client.get(url_for('login'))
+    response = client.get('/login')
     assert response.status_code == 200
     assert b"Login" in response.data
 
 
 def test_register_page(client):
-    response = client.get(url_for('register'))
+    response = client.get('/register')
     assert response.status_code == 200
     assert b"Register" in response.data

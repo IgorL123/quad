@@ -5,7 +5,7 @@ from ..models import Users
 from .logs import set_logger
 
 
-def create_app():
+def create_app(test_config=None):
 
     app = Flask(__name__,
                 template_folder='../../templates',
