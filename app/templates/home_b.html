@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <h2 class="text-center mb-3">
+        Получить значение слова в контексте
+    </h2>
+
+    <div class="container" style="width: 55%">
+    <div class="row justify-content-around" >
+        <div class="col-md">
+
+        <form action="/prompt" method="POST" id="main" content="application/json">
+            <div class="mb-3">
+
+              <label for="exampleFormControlInput1" class="form-label">Word</label>
+              <input type="text" name="word" class="form-control" id="exampleFormControlInput1" placeholder="example">
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Context</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                        placeholder="Some context for word example"
+                        name="text" form="main"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-bottom: 10px">Submit</button>
+        </form>
+
+            <div class="btn-group-horizontal" role="group" aria-label="Horizontal radio toggle button group">
+                {% for model in models %}
+                    {% if model.lower() == model_type %}
+                    <input type="radio" class="btn-check" name="vbtn-radio" id="{{ model }}" checked
+                        onclick="selectModel('{{ model }}')">
+                    <label class="btn btn-outline-danger" for="{{ model }}">{{ model }}</label>
+                    {% else %}
+                    <input type="radio" class="btn-check" name="vbtn-radio" id="{{ model }}"
+                        onclick="selectModel('{{ model }}')">
+                    <label class="btn btn-outline-danger" for="{{ model }}">{{ model }}</label>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="card" style="margin-top: 20px; margin-left: auto; margin-right: auto">
+                <div class="card-body">
+                    {% if result %}
+                        <h5 class="card-title"> Слово {{ word }} с уверенностью {{ score }}%</h5>
+                    {% else %}
+                        <h5 class="card-title"> Слово </h5>
+                    {% endif %}
+                    <p class="card-text">
+                    {% if result %}
+                        {{ result }}
+                    {% else %}
+                        Результат будет отображен здесь...
+                    {% endif %}
+                    </p>
+                    {%  if result %}
+                        <a href="{{ url_for('rating.change', id_response=id_response) }}" class="card-link">Правильно</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+<script src="../static/selectModel.js" > </script>
+
+{% endblock %}

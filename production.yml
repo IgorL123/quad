@@ -1,0 +1,41 @@
+version: '2.4'
+
+volumes:
+  wsd-vol:
+
+services:
+
+  pgsql:
+    image: postgres:12.11
+    restart: always
+    volumes:
+        - wsd-vol:/var/lib/postgresql/data
+    env_file:
+      - app/.env
+
+  flask:
+    command: ["sh", "-c", "gunicorn app.app:app -c ./gunicorn.conf.py"]
+    container_name: "wsd_service_app"
+    restart: on-failure
+    build:
+      context: wsd_rus
+      dockerfile: app/Dockerfile_prod
+    environment:
+      FLASK_APP: ./app/app.py
+      FLASK_ENV: production
+      STATIC_PATH: app/app/static/styles.css
+    depends_on:
+      - pgsql
+    expose:
+      - 5000
+    env_file:
+      - .env
+    volumes:
+      - ./app:/app/app
+
+  nginx:
+    build: app/nginx
+    ports:
+      - "1337:80"
+    depends_on:
+      - flask
