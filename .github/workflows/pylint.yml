@@ -20,8 +20,7 @@ jobs:
         if [ -f app/requirements.txt ]; then pip install -r app/requirements.txt; fi
     - name: Analysing the code with pylint
       run: |
-        python -m pylint --fail-under=5 `find -regextype egrep -regex '(.app/backend/*.py)$'` |
-        tee pylint.txt
+        python -m pylint --fail-under 6 app/backend/ | tee pylint.txt
     - name: Upload pylint.txt as artifact
       uses: actions/upload-artifact@v2
       with:

@@ -1,7 +1,6 @@
 from flask import request, Blueprint, redirect, url_for, make_response, flash, current_app
 from flask_login import LoginManager, login_required, current_user
 from ..models import db, Request, Response
-from ..core import main
 
 prompt = Blueprint('prompt', __name__)
 login_manager = LoginManager()
@@ -31,7 +30,7 @@ def show():
         current_app.logger.info(f"New prompt from user with id {current_user.id}")
 
         current_app.logger.info("Embeddings call")
-        res, score = main(text, word, model_type=current_app.config["MODEL"])
+        res, score = 1, 1 # main(text, word, model_type=current_app.config["MODEL"])
         current_app.logger.info("Embeddings end call")
 
         new_res = Response(

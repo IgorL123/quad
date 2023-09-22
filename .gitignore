@@ -3,3 +3,4 @@
 /app/model/fasttext
 /app/logs/error.log
 /app/logs/info.log
+pylint.txt
