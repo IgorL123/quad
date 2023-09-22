@@ -1,5 +1,4 @@
 import pytest
-from flask import url_for
 from app.backend.factory import create_app
 import os
 

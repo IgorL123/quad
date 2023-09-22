@@ -6,6 +6,12 @@ from .logs import set_logger
 
 
 def create_app(test_config=None):
+    """
+    Create Flask app object. Required for Application Factory Pattern
+
+    :param test_config:
+    :return:
+    """
     app = Flask(
         __name__, template_folder="../../templates", static_folder="../../static"
     )

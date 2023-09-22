@@ -6,7 +6,6 @@ def test_users():
     pasw = "TEST_PASSWORD"
 
     user = Users(email=email, password=pasw)
-
     assert user.email == email
     assert user.password_hash == pasw
 
