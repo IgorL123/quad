@@ -2,12 +2,12 @@ from flask import request, Blueprint, redirect, url_for, current_app
 from flask_login import LoginManager, login_required
 from ..models import db, Response
 
-rating = Blueprint('rating', __name__)
+rating = Blueprint("rating", __name__)
 login_manager = LoginManager()
 login_manager.init_app(rating)
 
 
-@rating.route('/rate', methods=['GET'])
+@rating.route("/rate", methods=["GET"])
 @login_required
 def change():
     id_response = request.args["id_response"]

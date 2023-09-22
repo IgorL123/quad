@@ -6,16 +6,15 @@ from .logs import set_logger
 
 
 def create_app(test_config=None):
-
-    app = Flask(__name__,
-                template_folder='../../templates',
-                static_folder='../../static')
+    app = Flask(
+        __name__, template_folder="../../templates", static_folder="../../static"
+    )
     app.config.from_object("app.backend.factory.config.Config")
     init_routes(app)
 
     login_manager = LoginManager()
     login_manager.session_protection = "strong"
-    login_manager.login_view = 'login.show'
+    login_manager.login_view = "login.show"
     login_manager.init_app(app)
 
     app.register_blueprint(login)
@@ -28,7 +27,7 @@ def create_app(test_config=None):
     app.app_context().push()
 
     set_logger(app.logger)
-    app.logger.info('App started')
+    app.logger.info("App started")
 
     @login_manager.user_loader
     def load_user(user_id):
