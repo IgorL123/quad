@@ -11,3 +11,4 @@ class Config(object):
     SESSION_PERMANENT = True
     LOGDIR = "app/logs/"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    FASTTEXT = "app/backend/core/embed/fasttext/model.model"
