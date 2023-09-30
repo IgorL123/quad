@@ -1,7 +1,6 @@
 from langchain.document_loaders import WikipediaLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains import RetrievalQA
-from langchain.vectorstores import Chroma
 from models import FredT5
 import re
 import string

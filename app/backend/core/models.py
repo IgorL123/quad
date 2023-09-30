@@ -1,9 +1,11 @@
 from typing import Any, List, Mapping, Optional
 import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from transformers import GenerationConfig
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
+from time import sleep
+from random import shuffle
+from langchain.chains import ConversationChain
 
 
 def preload():
@@ -68,3 +70,42 @@ class FredT5(LLM):
     def _identifying_params(self) -> Mapping[str, Any]:
         """Get the identifying parameters."""
         return {"do_sample": self.do_sample}
+
+
+class FakeModel(LLM):
+    """
+    For testing & debugging
+    """
+    return_value: bool
+    time_sleep: int
+
+    @property
+    def _llm_type(self) -> str:
+        return "test"
+
+    def _call(
+        self,
+        prompt: str,
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[CallbackManagerForLLMRun] = None,
+        **kwargs: Any,
+    ) -> str:
+        if stop is not None:
+            raise ValueError("stop kwargs are not permitted.")
+        value = None
+        sleep(self.time_sleep)
+
+        if self.return_value:
+            value = prompt.split()
+            shuffle(value)
+            value = " ".join(value)
+
+        return value
+
+    @property
+    def _identifying_params(self) -> Mapping[str, Any]:
+        """Get the identifying parameters."""
+        return {"return_value": self.return_value,
+                "time_sleep": self.time_sleep}
+
+
