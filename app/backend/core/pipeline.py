@@ -1,20 +1,67 @@
 from langchain.document_loaders import WikipediaLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import WebBaseLoader
+from langchain.chains import RetrievalQA
 from langchain.vectorstores import Chroma
+from models import FredT5
+import re
+import string
+import nltk
+import numpy as np
+from langchain.chains import ConversationChain
 
 
-def pipeline() -> str:
+def tokenize(text):
+    russian_stopwords = set(nltk.corpus.stopwords.words('russian'))
 
-    loader = WikipediaLoader("AGI")
-    data = loader.load()
+    punctuation = re.compile(r"[" + string.punctuation + string.ascii_letters + string.digits + "]")
 
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
-    all_splits = text_splitter.split_documents(data)
+    words = nltk.word_tokenize(text)
 
-    for i in all_splits:
-        print('-' * 80)
-        print(i)
+    words = [word for word in words if word not in russian_stopwords]
+
+    return [word for
+            word in words
+            if not re.search(punctuation, word)]
 
 
-pipeline()
+def fasttext(text, model, *args):
+    tokens = tokenize(text)
+
+    def use_model(model_input):
+        return model[str(model_input)]
+
+    text_array = np.array(list(map(use_model, tokens)))
+    res = text_array.mean(axis=0)
+    return res
+
+
+class Pipeline:
+    """
+    Naive Retrieval QA pipeline
+    """
+
+    def __init__(self):
+        self.source = "wiki"
+
+    @staticmethod
+    def run():
+        loader = WikipediaLoader("AGI")
+        data = loader.load()
+
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=256,
+            chunk_overlap=32)
+        all_splits = text_splitter.split_documents(data)
+
+        print(len(all_splits))
+
+        q = "Who work in field of AGI?"
+
+        llm = FredT5(do_sample=True)
+        conversation = ConversationChain(llm=llm)
+        res = conversation.run(q)
+        print(res)
+
+
+if __name__ == "__main__":
+    Pipeline.run()
