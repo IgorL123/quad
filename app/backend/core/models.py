@@ -5,7 +5,6 @@ from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
 from time import sleep
 from random import shuffle
-from langchain.chains import ConversationChain
 
 
 def preload():
@@ -76,6 +75,7 @@ class FakeModel(LLM):
     """
     For testing & debugging
     """
+
     return_value: bool
     time_sleep: int
 
@@ -105,7 +105,4 @@ class FakeModel(LLM):
     @property
     def _identifying_params(self) -> Mapping[str, Any]:
         """Get the identifying parameters."""
-        return {"return_value": self.return_value,
-                "time_sleep": self.time_sleep}
-
-
+        return {"return_value": self.return_value, "time_sleep": self.time_sleep}

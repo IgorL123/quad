@@ -1,7 +1,7 @@
 import chromadb
 from chromadb.config import Settings
 from chromadb import Documents, EmbeddingFunction, Embeddings
-from utils import fasttext
+from .utils import fasttext
 
 
 class FasttextEmbeddings(EmbeddingFunction):
@@ -24,19 +24,7 @@ def create_client():
         name="main_app_collection",
         embedding_function=FasttextEmbeddings,
         metadata={"hnsw:space": "cosine"},
-        get_or_create=True
+        get_or_create=True,
     )
 
     return collection
-
-
-def main_collection(client):
-    collection = client.create_collection(
-        name="main_app_collection",
-        embedding_function=FasttextEmbeddings,
-        metadata={"hnsw:space": "cosine"},
-        get_or_create=True
-    )
-    return collection
-
-
