@@ -8,7 +8,9 @@ from langchain.llms.base import LLM
 
 def preload():
     tokenizer = AutoTokenizer.from_pretrained("SiberiaSoft/SiberianFredT5-instructor")
-    model = AutoModelForSeq2SeqLM.from_pretrained("SiberiaSoft/SiberianFredT5-instructor")
+    model = AutoModelForSeq2SeqLM.from_pretrained(
+        "SiberiaSoft/SiberianFredT5-instructor"
+    )
     model.eval()
 
     return model, tokenizer
@@ -18,6 +20,7 @@ class FredT5(LLM):
     """
     Based on SiberianFredT5-instructor from SiberiaSoft
     """
+
     do_sample: bool
     """
     temperature: float
@@ -43,14 +46,19 @@ class FredT5(LLM):
             raise ValueError("stop kwargs are not permitted.")
         tokenizer, model = preload()
 
-        data = tokenizer('<SC6>' + prompt + '\nОтвет: <extra_id_0>', return_tensors="pt")
+        data = tokenizer(
+            "<SC6>" + prompt + "\nОтвет: <extra_id_0>", return_tensors="pt"
+        )
         data = {k: v.to(model.device) for k, v in data.items()}
         output_ids = model.generate(
             **data,
-            do_sample=self.do_sample, temperature=0.2,
-            max_new_tokens=512, top_p=0.95, top_k=5,
+            do_sample=self.do_sample,
+            temperature=0.2,
+            max_new_tokens=512,
+            top_p=0.95,
+            top_k=5,
             repetition_penalty=1.03,
-            no_repeat_ngram_size=2
+            no_repeat_ngram_size=2,
         )[0]
         out = tokenizer.decode(output_ids.tolist())
         out = out.replace("<s>", "").replace("</s>", "")

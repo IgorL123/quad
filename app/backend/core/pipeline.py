@@ -11,17 +11,17 @@ from langchain.chains import ConversationChain
 
 
 def tokenize(text):
-    russian_stopwords = set(nltk.corpus.stopwords.words('russian'))
+    russian_stopwords = set(nltk.corpus.stopwords.words("russian"))
 
-    punctuation = re.compile(r"[" + string.punctuation + string.ascii_letters + string.digits + "]")
+    punctuation = re.compile(
+        r"[" + string.punctuation + string.ascii_letters + string.digits + "]"
+    )
 
     words = nltk.word_tokenize(text)
 
     words = [word for word in words if word not in russian_stopwords]
 
-    return [word for
-            word in words
-            if not re.search(punctuation, word)]
+    return [word for word in words if not re.search(punctuation, word)]
 
 
 def fasttext(text, model, *args):
@@ -48,9 +48,7 @@ class Pipeline:
         loader = WikipediaLoader("AGI")
         data = loader.load()
 
-        text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=256,
-            chunk_overlap=32)
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=256, chunk_overlap=32)
         all_splits = text_splitter.split_documents(data)
 
         print(len(all_splits))
