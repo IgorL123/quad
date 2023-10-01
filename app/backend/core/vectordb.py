@@ -13,13 +13,12 @@ class FasttextEmbeddings(EmbeddingFunction):
     """
     Cant work with english - only russian
     """
+
     def __call__(self, texts: Documents) -> Embeddings:
-        return cast(Embeddings, [
-            fasttext(text).astype(np.float32) for text in texts
-        ])
+        return cast(Embeddings, [fasttext(text).astype(np.float32) for text in texts])
 
 
-def create_client():
+def create_client(retriever=None):
     global client
     """
     Create Croma client and main collection

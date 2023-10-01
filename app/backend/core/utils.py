@@ -4,9 +4,10 @@ import nltk
 import numpy as np
 from gensim.models import KeyedVectors
 from flask import current_app
+from typing import List
 
 
-def tokenize(text):
+def tokenize(text: str) -> List[str]:
     russian_stopwords = set(nltk.corpus.stopwords.words("russian"))
     punctuation = re.compile(
         r"[" + string.punctuation + string.ascii_letters + string.digits + "]"
@@ -15,6 +16,10 @@ def tokenize(text):
     words = [word for word in words if word not in russian_stopwords]
 
     return [word for word in words if not re.search(punctuation, word)]
+
+
+def lemmatize(words: List[str]) -> List[str]:
+    return words
 
 
 def fasttext(text):

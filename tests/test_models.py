@@ -8,5 +8,3 @@ def test_users():
     user = Users(email=email, password=pasw)
     assert user.email == email
     assert user.password_hash == pasw
-
-

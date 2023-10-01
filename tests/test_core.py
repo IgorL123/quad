@@ -11,9 +11,7 @@ from numpy import float32, issubdtype
 def test_fake_model():
     fake = FakeModel(return_value=True, time_sleep=1)
     prompt_template = "Tell me a {adjective} joke"
-    prompt = PromptTemplate(
-        input_variables=["adjective"], template=prompt_template
-    )
+    prompt = PromptTemplate(input_variables=["adjective"], template=prompt_template)
     llm = LLMChain(llm=fake, prompt=prompt)
 
     completion = llm.predict(adjective="funny")
@@ -33,7 +31,6 @@ def test_fasttext(client):
 
 
 def test_chroma(client):
-
     doc1 = "Natural Language Processing (NLP) is a domain of research whose objective is to analyze and understand it"
     doc2 = "Съешь же ещё этих мягких французских булок, да выпей чаю"
     doc3 = "Обычно панграммы используют для презентации шрифтов, чтобы можно было в одной фразе рассмотреть все глифы"
@@ -55,7 +52,7 @@ def test_chroma(client):
             "1",
             "2",
             "3",
-        ]
+        ],
     )
 
     texts = collection.query(
@@ -64,16 +61,10 @@ def test_chroma(client):
     )
     assert texts["documents"][0][0] == doc1
 
-    texts = collection.get(
-        where={"testing": True}
-    )
+    texts = collection.get(where={"testing": True})
     assert len(texts["documents"]) == 3
-    collection.delete(
-        where={"testing": True}
-    )
-    texts = collection.get(
-        where={"testing": True}
-    )
+    collection.delete(where={"testing": True})
+    texts = collection.get(where={"testing": True})
     assert len(texts["documents"]) == 0
 
     stop_client()

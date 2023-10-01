@@ -33,7 +33,8 @@ def create_app(test_config=None):
     app.app_context().push()
 
     set_logger(app.logger)
-    app.logger.info("App started")
+    if not test_config:
+        app.logger.info("App started")
 
     @login_manager.user_loader
     def load_user(user_id):
