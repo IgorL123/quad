@@ -57,7 +57,7 @@ class Pipeline:
         for doc in documents:
             all_splits.append(text_splitter.split_documents(doc))
 
-        #self.collection.add_documents(documents=all_splits, ids=list(range(self.last_id, len(all_splits))))
+        # self.collection.add_documents(documents=all_splits, ids=list(range(self.last_id, len(all_splits))))
         self.collection.add_texts(all_splits)
 
     def query(self, text: str) -> str:
