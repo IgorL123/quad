@@ -10,4 +10,6 @@ RUN pip3 install -r app/requirements.txt
 RUN python3 -m nltk.downloader stopwords
 RUN python3 -m nltk.downloader punkt
 
+RUN python -m spacy download ru_core_news_sm
+
 #CMD ["guvicorn", "app.main:app", "--hos", "0.0.0.0", "--port", "7860"]

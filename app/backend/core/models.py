@@ -45,11 +45,9 @@ class FredT5(LLM):
     ) -> str:
         if stop is not None:
             raise ValueError("stop kwargs are not permitted.")
-        tokenizer, model = preload()
+        model, tokenizer = preload()
 
-        data = tokenizer(
-            "<SC6>" + prompt + "\nОтвет: <extra_id_0>", return_tensors="pt"
-        )
+        data = tokenizer("<SC6>" + prompt + "\nОтвет: <extra_id_0>", return_tensors="pt")
         data = {k: v.to(model.device) for k, v in data.items()}
         output_ids = model.generate(
             **data,

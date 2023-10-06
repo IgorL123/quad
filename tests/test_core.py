@@ -1,6 +1,6 @@
 import pytest
 from .test_backend import client
-from app.backend.core.models import FakeModel
+from app.backend.core.models import FakeModel, FredT5
 from app.backend.core.vectordb import create_client, stop_client
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
@@ -21,6 +21,15 @@ def test_fake_model():
     assert completion.find("joke") != -1
     assert completion.find("funny") != -1
     assert completion.find("Tell") != -1
+
+
+def test_fred_model():
+    model = FredT5(do_sample=True)
+    prompt_template = "Расскажи мне {adjective} шутку"
+    prompt = PromptTemplate(input_variables=["adjective"], template=prompt_template)
+    llm = LLMChain(llm=model, prompt=prompt)
+    completion = llm.predict(adjective="смешную")
+    assert completion == 1
 
 
 def test_fasttext(client):
