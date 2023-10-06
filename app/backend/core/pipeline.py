@@ -7,7 +7,6 @@ from .utils import tokenize_spacy
 from typing import List
 from .vectordb import create_client
 from langchain.vectorstores import Chroma
-from chromadb.utils import embedding_functions
 from langchain.embeddings.spacy_embeddings import SpacyEmbeddings
 
 # TODO добавить разделение на языки ru/en
@@ -24,7 +23,7 @@ class Pipeline:
         self.config = config
 
         # TODO fix create_client()
-        #self.collection = create_client()
+        # self.collection = create_client()
 
         emb_fn = SpacyEmbeddings()
         self.collection = Chroma("main_app2", embedding_function=emb_fn)
@@ -76,4 +75,3 @@ class Pipeline:
         self.collecting(self.get_documents(text))
         res = self.chain.run(text)
         return res
-

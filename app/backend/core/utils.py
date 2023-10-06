@@ -10,15 +10,17 @@ from spacy.lang.ru.examples import sentences
 
 
 def tokenize_spacy(text: str) -> List[str]:
-    #TODO переделать и ускорить
+    # TODO переделать и ускорить
     stopwords = set(nltk.corpus.stopwords.words("russian"))
     stopwords = set(nltk.corpus.stopwords.words("english")) | stopwords
-    punctuation = re.compile(
-        r"[" + string.punctuation + string.digits + "]"
-    )
+    punctuation = re.compile(r"[" + string.punctuation + string.digits + "]")
     nlp = spacy.load("ru_core_news_sm")
     doc = nlp(text)
-    return [_.lemma_ for _ in doc if _.lemma_ not in stopwords and not re.search(punctuation, _.lemma_)]
+    return [
+        _.lemma_
+        for _ in doc
+        if _.lemma_ not in stopwords and not re.search(punctuation, _.lemma_)
+    ]
 
 
 def tokenize(text: str) -> List[str]:
