@@ -65,7 +65,6 @@ class Pipeline:
             chunk_overlap=self.config["chunk_overlap"],
         )
 
-        # TODO распидарасить
         for doc in documents:
             splits = text_splitter.split_documents(doc)
             self.collection.add_documents(splits)

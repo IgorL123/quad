@@ -15,10 +15,10 @@ services:
 
   flask:
     command: ["sh", "-c", "gunicorn app.app:app -c ./gunicorn.conf.py"]
-    container_name: "wsd_service_app"
+    container_name: "quad_service_app"
     restart: on-failure
     build:
-      context: wsd_rus
+      context: .
       dockerfile: app/Dockerfile_prod
     environment:
       FLASK_APP: ./app/app.py

@@ -63,7 +63,7 @@ class FredT5(LLM):
         )[0]
         out = tokenizer.decode(output_ids.tolist())
         out = out.replace("<s>", "").replace("</s>", "")
-        return out
+        return out[17:]
 
     @property
     def _identifying_params(self) -> Mapping[str, Any]:
